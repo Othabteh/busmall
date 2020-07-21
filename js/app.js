@@ -8,6 +8,7 @@ var numberOfClicks = [];
 var numberOfViews = [];
 var indexArr = [];
 
+
 function randomNumber() {
     return (Math.floor(Math.random() * imgArr.length));
 } randomNumber();
@@ -23,6 +24,7 @@ function imgGenerator(name) {
 for (let index = 0; index < imgArr.length; index++) {
     new imgGenerator(imgArr[index]);
 }
+
 render();
 var imgSection = document.getElementById('imgSection');
 var leftImg, midImg, rightImg;
@@ -108,6 +110,7 @@ function clickHandler() {
         populateNumberOfClicksAndViewsArr();
         generateChart();
         generateUserMessage();
+        storeImgs();
         imgSection.removeEventListener('click', clickHandler);
 
     }
@@ -139,6 +142,8 @@ function checker(x, y, z) {
 
 function generateUserMessage() {
     var textSection = document.getElementById('textSection');
+   
+   
     var ulList = document.createElement('ul')
     ulList.setAttribute('class', 'ul')
     for (let index = 0; index < allImg.length; index++) {
@@ -176,10 +181,10 @@ function generateChart() {
             datasets: [{
                 label: 'Number of clicks',
                 data: numberOfClicks,
-                backgroundColor: [
+                backgroundColor: 
                     '#f73859',
 
-                ],
+                
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
@@ -215,4 +220,54 @@ function generateChart() {
             }
         }
     });
+    myChart.canvas.parentNode.style.height = '700px';
+myChart.canvas.parentNode.style.width = '900px';
 }
+
+
+
+
+
+
+
+
+function storeImgs(){
+    // in order to save our array of objects into the localstorage we will need to formate our json object in json string
+    var jsonStringImg = JSON.stringify(allImg);
+    // creare a new property in our localstorage 
+    localStorage.setItem('imgs',jsonStringImg);
+    console.log(localStorage.getItem('imgs')); 
+    parseLocalStorage();
+
+ }
+
+//   console.log('inital');
+// console.table(allImg);
+// console.log('after updating');
+// console.table(allImg);
+
+
+  function parseLocalStorage(){
+    var previousImgArr =JSON.parse(localStorage.getItem('imgs'))
+    
+    // this funtcion will update the newly created objects with the old literation values
+    update(previousImgArr);
+
+  
+  }
+  function update(previousImgArr){
+    for (let index = 0; index < allImg.length; index++) {
+        // console.log(allImg,previousImgArr);
+      allImg[index].clicks = previousImgArr[index].clicks;
+      allImg[index].views = previousImgArr[index].views;
+      
+    }
+  }
+//   console.log(allImg.length);
+
+
+
+document.getElementById('clearStroage').addEventListener('click', function(){
+    localStorage.clear();
+  });
+  
