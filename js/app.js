@@ -1,175 +1,138 @@
-'use strict'
+'use_strict'
+var userRoundInput=prompt('Enter how many time you whant to loop?')
+var imgArr=["bag.jpg", "banana.jpg", "bathroom.jpg", "boots.jpg", "breakfast.jpg", "bubblegum.jpg", "chair.jpg", "cthulhu.jpg", "dog-duck.jpg", "dragon.jpg", "pen.jpg", "pet-sweep.jpg", "scissors.jpg", "shark.jpg", "tauntaun.jpg", "unicorn.jpg", "water-can.jpg", "wine-glass.jpg", "usb.gif", "sweep.png"];
+var imgSection = document.getElementById('imgSection');
+var first=document.getElementById('first');
+var second=document.getElementById('second');
+var third=document.getElementById('third');
 
-var imgArr = ["bag.jpg", "banana.jpg", "bathroom.jpg", "boots.jpg", "breakfast.jpg", "bubblegum.jpg", "chair.jpg", "cthulhu.jpg", "dog-duck.jpg", "dragon.jpg", "pen.jpg", "pet-sweep.jpg", "scissors.jpg", "shark.jpg", "tauntaun.jpg", "unicorn.jpg", "water-can.jpg", "wine-glass.jpg", "usb.gif", "sweep.png"];
-
-var allImg = [];
-var imgName = [];
+Product.all=[];
+var randoumNumberArr=[];
 var numberOfClicks = [];
 var numberOfViews = [];
-var indexArr = [];
+var imgName = [];
+var totalClicks=0;
 
+function Product(name) {
+    this.Name=name;
+    this.Path=`img/${name}`;
+    this.views=0;
+    this.clicks=0;
 
-function randomNumber() {
-    return (Math.floor(Math.random() * imgArr.length));
-} randomNumber();
-
-function imgGenerator(name) {
-    this.Name = name;
-    this.imgPath = `images/${name}`;
-    this.clicks = 0;
-    this.views = 0;
-    allImg.push(this);
-    imgName.push(this.Name.slice(0, name.length - 4))
+    Product.all.push(this);
+    imgName.push(this.Name.slice(0,name.length-4));
+  
+    
 }
+
 for (let index = 0; index < imgArr.length; index++) {
-    new imgGenerator(imgArr[index]);
+    new Product(imgArr[index]);
+    
 }
+
+function randomNuberGenerator(min, max) {
+  
+  return Math.floor(Math.random() * (max - min + 1)) + min; 
+
+
+}
+
+
+var img1,img2,img3;
+
 
 render();
-var imgSection = document.getElementById('imgSection');
-var leftImg, midImg, rightImg;
-var leftImgIndex, midImgIndex, rightImgIndex;
-function render() {
-    leftImgIndex = randomNumber();
-    midImgIndex = randomNumber();
-    rightImgIndex = randomNumber();
-    while (leftImgIndex === midImgIndex || midImgIndex === rightImgIndex || leftImgIndex === rightImgIndex || !checker(leftImgIndex,midImgIndex,rightImgIndex)) {
-        leftImgIndex = randomNumber();
-        midImgIndex = randomNumber();
-        rightImgIndex = randomNumber();
+
+function render(){
+ img1=randomNuberGenerator(0,imgArr.length-1);
+ img2=randomNuberGenerator(0,imgArr.length-1);
+ img3=randomNuberGenerator(0,imgArr.length-1);
+    
+
+    while(randoumNumberArr.includes(img1)){
+        img1=randomNuberGenerator(0,imgArr.length-1);
     }
-    // while(!checker(leftImgIndex,midImgIndex,rightImgIndex)){
-    //     leftImgIndex = randomNumber();
-    //     midImgIndex = randomNumber();
-    //     rightImgIndex = randomNumber();
-    // }
-    console.log( ` prev.prod${indexArr}`);
-    indexArr[0]=leftImgIndex;
-    indexArr[1]=midImgIndex;
-    indexArr[2]=rightImgIndex;
-    console.log( ` after.prod${indexArr}`);
-    // checker(leftImgIndex,midImgIndex,rightImgIndex);
-    var first = document.getElementById('first');
-    leftImg = allImg[leftImgIndex];
-    var leftImgPath = leftImg.imgPath;
-    leftImg.views++;
-    first.setAttribute('src', leftImgPath);
-    first.setAttribute('title', leftImg.Name);
+    while(img1===img2||randoumNumberArr.includes(img2)){
+        img2=randomNuberGenerator(0,imgArr.length-1);
+    }
+  
+    while(img3===img1||img3===img2||randoumNumberArr.includes(img3)){
+        img3=randomNuberGenerator(0,imgArr.length-1);
+    }
 
-    var second = document.getElementById('second');
-    midImg = allImg[midImgIndex];
-    var midImgPath = midImg.imgPath;
-    midImg.views++;
-    second.setAttribute('src', midImgPath);
-    second.setAttribute('title', midImg.Name);
+    randoumNumberArr=[];
+    randoumNumberArr.push(img1);
+    randoumNumberArr.push(img2);
+    randoumNumberArr.push(img3);
 
 
-    var third = document.getElementById('third');
-    rightImg = allImg[rightImgIndex];
-    var rightImgPath = rightImg.imgPath;
-    rightImg.views++;
-    third.setAttribute('src', rightImgPath);
-    third.setAttribute('title', rightImg.Name);
-    // indexArr.push(leftImgIndex, midImgIndex, rightImgIndex);
 
-
+     first=document.getElementById('first');
+     first.src=Product.all[img1].Path;
+     Product.all[img1].views++
+     second=document.getElementById('second');
+     second.src=Product.all[img2].Path;
+     Product.all[img2].views++;
+     third=document.getElementById('third');
+     third.src=Product.all[img3].Path;
+     Product.all[img3].views++;
+    
 }
-var totalClicks = 0;
+
 imgSection.addEventListener('click', clickHandler)
-function clickHandler() {
-    if (totalClicks < 25) {
+function clickHandler(){
+   
+    if (totalClicks < userRoundInput) {
         var clickedElementId = event.target.id;
         if (clickedElementId === 'first' || clickedElementId === 'second' || clickedElementId === 'third') {
             totalClicks++;
+           if(clickedElementId==='first'){
+               Product.all[img1].clicks++;
+           }
+           if (clickedElementId==='second') {
+               Product.all[img2].clicks++;
+           }
+           if (clickedElementId==='third') {
+               Product.all[img3].clicks++;
+           }
+           render();
 
-            if (clickedElementId === 'first') {
-                leftImg.clicks++;
-            }
-            if (clickedElementId === 'second') {
-                midImg.clicks++;
-            }
-            if (clickedElementId === 'third') {
-                rightImg.clicks++;
-            }
-            // checker(leftImgIndex, midImgIndex, rightImgIndex);
-            render();
-
-            // while(leftImgIndex===indexArr[0]||leftImgIndex===indexArr[1]||leftImgIndex===indexArr[2]||midImgIndex===indexArr[0]||midImgIndex===indexArr[1]||midImgIndex===indexArr[2]||rightImgIndex===indexArr[0]||rightImgIndex===indexArr[1]||rightImgIndex===indexArr[2]){
-            //     leftImgIndex=randomNumber();
-            //     rightImgIndex=randomNumber();
-            //     midImgIndex=randomNumber();
-
-            // } 
-
-            // console.log(indexArr);
-
-
-        }
-    } else {
-
+            
+}
+    }else{
+        userMessage();
+        storeImgs();
         populateNumberOfClicksAndViewsArr();
         generateChart();
-        generateUserMessage();
-        storeImgs();
-        imgSection.removeEventListener('click', clickHandler);
-
+        imgSection.removeEventListener('click',clickHandler);
     }
-
-
 }
-function checker(x, y, z) {
-    // var flage=true;
-    if (indexArr.includes(x)){
-        return false;
-        // leftImgIndex = randomNumber();
-        // indexArr[0]=leftImgIndex
-    } if(indexArr.includes(y) ){
-        return false;
-        // midImgIndex = randomNumber();
-        // indexArr[1]=midImgIndex
-    }if(indexArr.includes(z)){
-        return false;
-        // rightImgIndex = randomNumber();
-        // indexArr[2]=rightImgIndex;
+
+function userMessage(){
+    var textSection=document.getElementById('textSection');
+    var result=document.createElement('h3');
+    result.setAttribute('id','result');
+    result.textContent='Results :';
+    textSection.appendChild(result);
+    var ulList=document.createElement('ul')
+    ulList.setAttribute('id','ulList')
+    for (let index = 0; index < imgArr.length; index++) {
+     var liList=document.createElement('li')
+     liList.setAttribute('class','liList')   
+     liList.textContent=`${Product.all[index].Name} had ${Product.all[index].clicks} votes and was shown ${Product.all[index].views}`
+     ulList.appendChild(liList)
+     textSection.appendChild(ulList);
 
     }
-    return true;
-        
-    }
-    
 
-    // console.log(x, y, z);
-
-function generateUserMessage() {
-    var textSection = document.getElementById('textSection');
-   
-   
-    var ulList = document.createElement('ul')
-    ulList.setAttribute('class', 'ul')
-    for (let index = 0; index < allImg.length; index++) {
-        // var imgList=document.createElement('img');
-        // imgList.setAttribute('src',allImg[index].imgPath);
-        // var imgCap=document.createElement('figcaption')
-        // imgCap.textContent=`${imgName[index]} had ${allImg[index].clicks} votes and was shown ${allImg[index].views} times`;
-        var li = document.createElement('li');
-        li.setAttribute('class', 'li')
-        li.textContent = `${imgName[index]} had ${allImg[index].clicks} votes and was shown ${allImg[index].views} times`;
-        // imgList.appendChild(imgCap);
-        // textSection.appendChild(imgList);
-        ulList.appendChild(li);
-        textSection.appendChild(ulList);
-    }
 }
 
 function populateNumberOfClicksAndViewsArr() {
-    for (let index = 0; index < allImg.length; index++) {
-        numberOfClicks.push(allImg[index].views);
-        numberOfViews.push(allImg[index].clicks);
+    for (let index = 0; index < Product.all.length; index++) {
+        numberOfClicks.push(Product.all[index].views);
+        numberOfViews.push(Product.all[index].clicks);
     }
 }
-
-
-
 
 
 function generateChart() {
@@ -220,31 +183,20 @@ function generateChart() {
             }
         }
     });
-    myChart.canvas.parentNode.style.height = '700px';
+    myChart.canvas.parentNode.style.height = '400px';
 myChart.canvas.parentNode.style.width = '900px';
 }
 
 
-
-
-
-
-
-
 function storeImgs(){
     // in order to save our array of objects into the localstorage we will need to formate our json object in json string
-    var jsonStringImg = JSON.stringify(allImg);
+    var jsonStringImg = JSON.stringify(Product.all);
     // creare a new property in our localstorage 
     localStorage.setItem('imgs',jsonStringImg);
     console.log(localStorage.getItem('imgs')); 
     parseLocalStorage();
 
  }
-
-//   console.log('inital');
-// console.table(allImg);
-// console.log('after updating');
-// console.table(allImg);
 
 
   function parseLocalStorage(){
@@ -256,18 +208,9 @@ function storeImgs(){
   
   }
   function update(previousImgArr){
-    for (let index = 0; index < allImg.length; index++) {
-        // console.log(allImg,previousImgArr);
-      allImg[index].clicks = previousImgArr[index].clicks;
-      allImg[index].views = previousImgArr[index].views;
+    for (let index = 0; index < Product.all.length; index++) {
+      Product.all[index].clicks = previousImgArr[index].clicks;
+      Product.all[index].views = previousImgArr[index].views;
       
     }
   }
-//   console.log(allImg.length);
-
-
-
-document.getElementById('clearStroage').addEventListener('click', function(){
-    localStorage.clear();
-  });
-  
