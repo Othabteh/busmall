@@ -11,45 +11,56 @@ header h1{
     padding: 20px 10px;
     border: 5px solid coral;
 }
-#imgSection {
+
+#imgSection{
     max-width: 90%;
     margin: 0 auto;
     text-align: center;
-  }
-  img {
+}
+    
+
+#imgSection img{
     width: 300px;
     height: 300px;
     border: 10px solid greenyellow;
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
-  }
-  img:hover{
-      background-color: red;
-  }
+}
+#imgSection img:hover{
+    background-color: red;
+}
 
-  #textSection{
-      margin-left: 50px;
-      margin-top: 50px;
+#textSection{
+    margin-left: 50px;
+    margin-top: 50px;
+    margin-top: 500px;
 
-  }
-  .li{
-     padding-bottom: 15px;
-     font-size: 20px;
+}
+.liList{
+   padding-bottom: 15px;
+   font-size: 20px;
 
-  }
-  footer{
-      background-color: salmon;
-      text-align: center;
-      padding: 98px 100px;
+}
+#result{
+    font-size: 30px;
+    color: red;
+    background-color: black;
+    width: 150px;
+    margin-bottom: 15px;
+}
+#chart{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+footer{
+    background-color: black;
+    text-align: center;
+}
+footer p{
+    font-size: 30px;
+    color: white;
+    padding: 30px;
 
-
-  }
-  footer a{
-      color: rgb(17, 17, 17);
-      font-size: 25px;
-      padding: 20px 20px;
-  }
-  footer a:hover{
-      color: royalblue;
-  }
+}
